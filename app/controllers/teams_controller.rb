@@ -1,3 +1,4 @@
+#  -*- encoding: utf-8 -*-
 class TeamsController < ApplicationController
   # GET /teams
   # GET /teams.json
@@ -13,11 +14,16 @@ class TeamsController < ApplicationController
   # GET /teams/1
   # GET /teams/1.json
   def show
+    begin
     @team = Team.find(params[:id])
-
-    respond_to do |format|
+    rescue ActiveRecord::RecordNotFound
+      logger.error "Попытка доступа к несуществующей корзине #{params[:id]}"
+      redirect_to teams_url, notice: 'dont exist'
+    else
+    respond_to do |format| 
       format.html # show.html.erb
       format.json { render json: @team }
+    end
     end
   end
 

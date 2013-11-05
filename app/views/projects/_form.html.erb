@@ -1,0 +1,37 @@
+<%= form_for @project, :html => {:multipart => true} do |f| %>
+  <% if @project.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
+
+      <ul>
+      <% @project.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+		<%= f.file_field :project_pictures_asset, multiple: true, name: "project[pictures_attributes][][asset]"%>
+  </div>
+  
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+	<%= f.label :project_type %><br /> 
+	<%= f.radio_button :project_type, "office" %><%= f.label :project_type, "OFFICE"%><br />
+	<%= f.radio_button :project_type, "home" %><%= f.label :project_type, "HOME"%><br />
+</div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+<% @project.pictures.each do |a| %>
+  <%= image_tag(a.asset.url) %>
+  <%= link_to "delete", project_delete_asset_path(project_id: a.attachable_id, id: a.id) %>
+<% end %>
