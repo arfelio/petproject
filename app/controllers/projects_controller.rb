@@ -1,28 +1,35 @@
+#  -*- encoding: utf-8 -*-
 class ProjectsController < ApplicationController
+  skip_before_filter :authorize, only:[:show,:index]
   # GET /projects
   # GET /projects.json
+ 
   def index
-  
-    
-     
-    @projects = Project.all
-
-    respond_to do |format|
+    @projects = Project.paginate(page: params[:page], order: 'created_at desc', per_page: 3)
+  if  @projects.blank?
+   respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }
     end
-   
+   else
+      render 'index1.html.erb'
+   end 
   end
 
   # GET /projects/1
   # GET /projects/1.json
   def show
+    begin
     @project = Project.find(params[:id])
-
+    rescue ActiveRecord::RecordNotFound
+      logger.error "Попытка доступа к несуществующей  #{params[:id]}"
+      render file: "/home/ria081/petproject/pet/public/404.html"
+    else
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @project }
     end
+   end
   end
 
   # GET /projects/new
@@ -94,8 +101,9 @@ class ProjectsController < ApplicationController
     redirect_to :back
    end
   def sort_project
-    @projects = Project.where("project_type = ?",params[:project][:project_type])
-    
+    @projects = Project.where("project_type = ?",params[:project][:project_type]).paginate(page: params[:page], order: 'created_at desc', per_page: 10)   
+    #@projects = @projects.paginate page: params[:page], order: 'created_at desc',
+   #per_page: 10
     respond_to do |format|
       format.html # home.html.erb
       format.json {render json: @projects}

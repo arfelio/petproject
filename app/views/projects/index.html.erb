@@ -1,11 +1,7 @@
 <h1>Listing projects</h1>
 
 
-
-<%= form_for @projects, url: {action: "sort_project"}, :method => :get do |f| %>
-<%= select( :project, :project_type, options_for_select([['HOME', 'home'], ['OFFICE', 'office']]))  %>
-<%= f.submit "Choice" %>
-<% end %> 
+<div> <%= :notice %></div>
 
 
 
@@ -36,4 +32,7 @@
 
 <%= link_to 'New Project', new_project_path %>
 <br />
-data is <%= @data%>
+<p>
+	<%= will_paginate @projects %>
+	
+</p>

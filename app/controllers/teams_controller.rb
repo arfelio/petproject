@@ -1,5 +1,6 @@
 #  -*- encoding: utf-8 -*-
 class TeamsController < ApplicationController
+ skip_before_filter :authorize, only:[:index,:show]
   # GET /teams
   # GET /teams.json
   def index
@@ -17,7 +18,7 @@ class TeamsController < ApplicationController
     begin
     @team = Team.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      logger.error "Попытка доступа к несуществующей корзине #{params[:id]}"
+      logger.error "Попытка доступа к несуществующей  #{params[:id]}"
       redirect_to teams_url, notice: 'dont exist'
     else
     respond_to do |format| 

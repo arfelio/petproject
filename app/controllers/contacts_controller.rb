@@ -1,4 +1,5 @@
 class ContactsController < ApplicationController
+  skip_before_filter :authorize, only:[:new,:create]
   # GET /contacts
   # GET /contacts.json
   def index
@@ -44,7 +45,8 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       if @contact.save
-        format.html { redirect_to @contact, notice: 'Contact was successfully created.' }
+        MsgNotifier.received(@contact).deliver
+        format.html { redirect_to :back, notice: 'Your  message was sended.' }
         format.json { render json: @contact, status: :created, location: @contact }
       else
         format.html { render action: "new" }

@@ -1,0 +1,4 @@
+<h1>Welcome Admin</h1>
+Now <%= Time.now %>
+You have <%= pluralize(@total_contacts, "contact") %>
+<%= button_to 'Logout', logout_path, method: :delete %>
