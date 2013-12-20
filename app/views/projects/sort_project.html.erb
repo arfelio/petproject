@@ -12,7 +12,7 @@
 
 <% @projects.each do |project| %>
   <tr>
-    <td><%= image_tag (project.pictures.first) %></td>
+    <td><%= image_tag (project.pictures.first.asset.url) %></td>
     <td><%= project.title %></td>
     <td><%= project.description %></td>
     <td><%= project.project_type %></td>

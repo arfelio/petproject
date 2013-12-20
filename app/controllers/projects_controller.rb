@@ -101,7 +101,7 @@ class ProjectsController < ApplicationController
     redirect_to :back
    end
   def sort_project
-    @projects = Project.where("project_type = ?",params[:project][:project_type]).paginate(page: params[:page], order: 'created_at desc', per_page: 10)   
+    @projects = Project.where("project_type = ?",params[:project][:project_type]).paginate(page: params[:page], order: 'created_at desc', per_page: 2)   
     #@projects = @projects.paginate page: params[:page], order: 'created_at desc',
    #per_page: 10
     respond_to do |format|
